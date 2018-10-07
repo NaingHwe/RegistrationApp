@@ -7,13 +7,14 @@
     tools:context=".StudentRegistration.StudentListActivity"
     android:orientation="vertical">
 
-    <ImageView
+  <!--  <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/background_pic1" />
+        android:src="@drawable/background_pic1" />-->
 
     <LinearLayout
+        android:background="@drawable/background_pic1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -26,7 +27,7 @@
             android:padding="5dp">
 
             <Button
-                android:id="@+id/btn_search"
+                android:id="@+id/btn_RegisterBack"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
