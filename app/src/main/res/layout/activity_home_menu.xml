@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="10"
+    android:background="@drawable/background_pic1"
+    tools:context=".HomeMenuActivity">
+    <RelativeLayout
+        android:layout_weight="2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/tv_homeMenu_titleName"
+            android:gravity="center_horizontal"
+            android:text="@string/data_insights"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+
+android:layout_below="@+id/tv_homeMenu_titleName"
+           android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:id="@+id/homeMenu_profile_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/profile_icon" />
+
+       <!-- <TextView
+
+            android:id="@+id/tv_homeMenu_name"
+            android:gravity="center_horizontal"
+            android:text="Training App"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />-->
+    </RelativeLayout>
+
+    <GridLayout
+
+        android:columnCount="2"
+        android:rowCount="3"
+        android:alignmentMode="alignMargins"
+        android:columnOrderPreserved="false"
+        android:layout_weight="8"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="14dp">
+        <android.support.v7.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_rowWeight="1"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="8dp"
+            android:layout_marginEnd="16dp"
+            tools:ignore="UnusedAttribute">
+
+<LinearLayout
+
+    android:orientation="vertical"
+    android:layout_margin="16dp"
+    android:layout_gravity="center_horizontal|center_vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:ignore="UseCompoundDrawables">
+
+    <ImageView
+
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/student_registration"
+        android:layout_width="@dimen/img_width"
+        android:layout_height="@dimen/img_height"
+        tools:ignore="ContentDescription" />
+    <TextView
+        android:textStyle="bold"
+        android:textSize="@dimen/menu_txt"
+        android:textColor="@android:color/black"
+        android:textAlignment="center"
+        android:text="@string/student_registration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_rowWeight="1"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="8dp"
+            tools:ignore="RtlHardcoded,UnusedAttribute">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_margin="16dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="UseCompoundDrawables">
+                <ImageView
+
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/course_entry"
+                    android:layout_width="@dimen/img_width"
+                    android:layout_height="@dimen/img_height"  />
+                <TextView
+                    android:textStyle="bold"
+                    android:textSize="@dimen/menu_txt"
+                    android:textColor="@android:color/black"
+                    android:textAlignment="center"
+                    android:text="Course Entry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_marginBottom="16dp"
+
+            android:layout_marginRight="16dp"
+            android:layout_rowWeight="1"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="8dp"
+            android:layout_marginEnd="16dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_margin="16dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="UseCompoundDrawables">
+                <ImageView
+
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/open_course"
+                    android:layout_width="@dimen/img_width"
+                    android:layout_height="@dimen/img_height"  />
+                <TextView
+                    android:textStyle="bold"
+                    android:textSize="@dimen/menu_txt"
+                    android:textColor="@android:color/black"
+                    android:textAlignment="center"
+                    android:text="Opening Course"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_marginBottom="16dp"
+
+            android:layout_marginRight="16dp"
+            android:layout_rowWeight="1"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="8dp"
+            tools:ignore="RtlHardcoded">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_margin="16dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="UseCompoundDrawables">
+                <ImageView
+
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/student_attendance"
+                    android:layout_width="@dimen/img_width"
+                    android:layout_height="@dimen/img_height"
+                    tools:ignore="ContentDescription" />
+                <TextView
+                    android:textStyle="bold"
+                    android:textSize="@dimen/menu_txt"
+                    android:textColor="@android:color/black"
+                    android:textAlignment="center"
+                    android:text="@string/student_attendance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_marginBottom="16dp"
+
+            android:layout_marginRight="16dp"
+            android:layout_rowWeight="1"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="8dp"
+            tools:ignore="RtlHardcoded,UnusedAttribute"
+            android:layout_marginEnd="16dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_margin="16dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="UseCompoundDrawables">
+                <ImageView
+
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/student_attendance"
+                    android:layout_width="@dimen/img_width"
+                    android:layout_height="@dimen/img_height"
+                    tools:ignore="ContentDescription" />
+                <TextView
+                    android:textStyle="bold"
+                    android:textSize="@dimen/menu_txt"
+                    android:textColor="@android:color/black"
+                    android:textAlignment="center"
+                    android:text="@string/student_attendance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_rowWeight="1"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="8dp"
+            android:layout_marginEnd="16dp"
+            tools:ignore="UnusedAttribute">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_margin="16dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="UseCompoundDrawables">
+                <ImageView
+
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/information_center"
+                    android:layout_width="@dimen/img_width"
+                    android:layout_height="@dimen/img_height"
+                    tools:ignore="ContentDescription" />
+                <TextView
+
+                    android:textStyle="bold"
+                    android:textSize="@dimen/menu_txt"
+                    android:textColor="@android:color/black"
+                    android:textAlignment="center"
+                    android:text="@string/information_center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+       <!-- <android.support.v7.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_marginBottom="16dp"
+            android:layout_marginleft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_rowWeight="1"
+            app:cardElevation="10dp"
+            app:cardCornerRadius="10dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_margin="16dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/person_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black"
+                    android:textAlignment="center"
+                    android:text="Me"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>-->
+
+    </GridLayout>
+
+</LinearLayout>
