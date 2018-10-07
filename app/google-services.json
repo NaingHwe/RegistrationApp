@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "492602942089",
+    "firebase_url": "https://trainingapp-b0800.firebaseio.com",
+    "project_id": "trainingapp-b0800",
+    "storage_bucket": "trainingapp-b0800.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:492602942089:android:c6948fce84eea453",
+        "android_client_info": {
+          "package_name": "com.datainsights.trainingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "492602942089-4ada9cspkvlbbc9c7pl9ip18r8opvtd4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCi1aCmeSsZZY9Kx2vqtYuHR9CLk5FSU0Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
