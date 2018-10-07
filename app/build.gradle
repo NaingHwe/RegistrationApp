@@ -33,5 +33,8 @@ dependencies {
     implementation 'ja.burhanrashid52:photoeditor:0.3.3'
     implementation 'com.squareup.picasso:picasso:2.3.2'
     implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-auth:16.0.1'
+
+
 }
 apply plugin: 'com.google.gms.google-services'
