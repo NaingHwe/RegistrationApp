@@ -15,10 +15,11 @@
     xmlns:tools="http://schemas.android.com/tools"
 
     tools:context=".StudentRegistration.StudentDetailActivity">
+
     <android.support.constraint.ConstraintLayout
-        android:background="@drawable/background_pic1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_pic1">
 
         <Button
             android:id="@+id/btn_back"
@@ -44,26 +45,24 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.234" />
 
-        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:background="@color/colorPrimary"
+        <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_menu_camera"
-            app:civ_border_color="#ffffff"
-            app:civ_border_width="1dp"
+            android:background="@drawable/circle_green_shape"
+            android:padding="3dp"
+            android:src="@drawable/ic_camera_alt_black_24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.577"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.33" />
-        <!--  android:layout_marginBottom="50dp"-->
 
         <LinearLayout
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -104,25 +103,25 @@
                 android:orientation="horizontal">
 
                 <RadioButton
-
                     android:id="@+id/radio_male"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:background="@drawable/gender_male"
+                    android:background="@drawable/gender_male_radio_selector"
+                    android:button="null"
                     android:checked="true" />
 
                 <RadioButton
                     android:id="@+id/radio_female"
+                    android:layout_marginLeft="@dimen/margin_huge"
+                    android:layout_marginStart="@dimen/margin_huge"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_marginLeft="100dp"
-                    android:background="@drawable/gender_female" />
-
+                    android:background="@drawable/gender_female_radio_selector"
+                    android:button="null" />
 
             </RadioGroup>
 
             <android.support.v7.widget.CardView
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -172,7 +171,6 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -187,9 +185,9 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:background="@android:color/transparent"
-                    android:drawableLeft="@drawable/outline_alternate_email_black_18dp"
+                    android:drawableLeft="@drawable/ic_email_sign"
                     android:drawablePadding="10dp"
-                    android:drawableStart="@drawable/outline_alternate_email_black_18dp"
+                    android:drawableStart="@drawable/ic_email_sign"
                     android:hint="@string/login_form_et_hint_gmail"
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress" />
@@ -216,6 +214,20 @@
                     tools:ignore="HardcodedText" />
             </android.support.v7.widget.CardView>
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Student Registration"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/md_white_1000"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
