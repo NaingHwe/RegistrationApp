@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.datainsights.trainingapp.StudentRegistration.StudentList;
@@ -57,12 +56,10 @@ public class RVStudentListAdapter extends RecyclerView.Adapter<RVStudentListAdap
 
     //(1)create view holder
     static class StudentListViewHolder extends RecyclerView.ViewHolder{
-        Button btnStudentDetailLink;
          TextView tvStudentName;
         CircleImageView cvStudentProfile;
         public StudentListViewHolder(View itemView) {
             super(itemView);
-            btnStudentDetailLink = itemView.findViewById(R.id.btn_studentDetailLink);
             tvStudentName = itemView.findViewById(R.id.tv_studentName);
             cvStudentProfile = itemView.findViewById(R.id.cv_studentProfile);
 
