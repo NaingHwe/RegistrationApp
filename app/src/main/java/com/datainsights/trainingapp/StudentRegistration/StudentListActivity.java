@@ -61,6 +61,9 @@ List<StudentList> studentListList = Arrays.asList(
         rvStudentList.setLayoutManager(layoutManager);
         RVStudentListAdapter rvStudentListAdapter = new RVStudentListAdapter(this,studentListList);
         rvStudentList.setAdapter(rvStudentListAdapter);
+
+
+
     }
 
 }

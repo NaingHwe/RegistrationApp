@@ -106,6 +106,7 @@
 
                     <LinearLayout
 
+                        android:id="@+id/linearlayout_courseEnty"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="?android:attr/selectableItemBackground"

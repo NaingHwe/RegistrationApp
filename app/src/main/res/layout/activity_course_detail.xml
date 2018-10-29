@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/background_pic1"
-    tools:context=".StudentRegistration.StudentDetailActivity">-->
-
 <ScrollView  android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -22,7 +13,7 @@
         android:background="@drawable/background_pic1">
 
         <Button
-            android:id="@+id/btn_back"
+            android:id="@+id/btn_course_detail_back"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -79,49 +70,21 @@
                 app:cardElevation="5dp">
 
                 <EditText
-                    android:id="@+id/login_et_email"
+                    android:id="@+id/et_course_title"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/login_form_et_height"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:background="@android:color/transparent"
-                    android:drawableLeft="@drawable/person_icon"
+                    android:drawableLeft="@drawable/ic_title"
                     android:drawablePadding="10dp"
-                    android:drawableStart="@drawable/person_icon"
+                    android:drawableStart="@drawable/ic_title"
 
-                    android:hint="Name"
+                    android:hint="Title"
                     android:imeOptions="actionNext"
                     android:inputType="text" />
             </android.support.v7.widget.CardView>
 
-            <RadioGroup
-                android:id="@+id/gender_radio_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_small"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/radio_male"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/gender_male_radio_selector"
-                    android:button="@null"
-                    android:checked="true" />
-
-                <RadioButton
-                    android:id="@+id/radio_female"
-                    android:layout_marginLeft="@dimen/margin_huge"
-                    android:layout_marginStart="@dimen/margin_huge"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:button="@null"
-                    android:background="@drawable/gender_female_radio_selector"
-                    />
-
-            </RadioGroup>
-
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -138,62 +101,42 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:background="@android:color/transparent"
-                    android:drawableLeft="@drawable/ic_phone"
+                    android:drawableLeft="@drawable/ic_aspect_ratio"
                     android:drawablePadding="10dp"
-                    android:drawableStart="@drawable/ic_phone"
-                    android:hint="09xxxxxxxxx"
+                    android:drawableStart="@drawable/ic_aspect_ratio"
+                    android:hint="Course Code"
                     android:imeOptions="actionNext"
-                    android:inputType="phone" />
+                    android:inputType="text" />
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
 
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="150dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="5dp">
-
+<!--   android:layout_height="@dimen/login_form_et_height"-->
                 <EditText
 
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/login_form_et_height"
+                    android:layout_height="wrap_content"
+                    android:lines="8"
+                    android:maxLines="10"
+                    android:minLines="7"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:background="@android:color/transparent"
-                    android:drawableLeft="@drawable/ic_phone"
-                    android:drawablePadding="10dp"
-                    android:drawableStart="@drawable/ic_phone"
-                    android:hint="09xxxxxxxxx"
-                    android:imeOptions="actionNext"
-                    android:inputType="phone" />
+                    android:paddingLeft="30dp"
+                    android:hint="Description"
+                    android:imeOptions="actionDone"
+                    android:inputType="text|textMultiLine"
+                    android:layout_margin="10dp"
+                    android:gravity="top"
+                  />
             </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="5dp">
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/login_form_et_height"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:background="@android:color/transparent"
-                    android:drawableLeft="@drawable/ic_email_sign"
-                    android:drawablePadding="10dp"
-                    android:drawableStart="@drawable/ic_email_sign"
-                    android:hint="@string/login_form_et_hint_gmail"
-                    android:imeOptions="actionNext"
-                    android:inputType="textEmailAddress" />
-            </android.support.v7.widget.CardView>
-
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -208,7 +151,7 @@
                     style="@style/Base.Widget.AppCompat.Button.Borderless"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Register"
+                    android:text="Save"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="#ffffff"
                     android:textStyle="bold"
@@ -216,7 +159,7 @@
             </android.support.v7.widget.CardView>
         </LinearLayout>
 
-        <TextView
+      <!--  <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -228,17 +171,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />-->
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
-
-
-
-
-
-
-
-
-<!--
-</LinearLayout>-->

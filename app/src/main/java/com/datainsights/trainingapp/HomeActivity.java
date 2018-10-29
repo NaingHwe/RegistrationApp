@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.datainsights.trainingapp.CourseEntry.CourseListActivity;
 import com.datainsights.trainingapp.StudentRegistration.StudentListActivity;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener{
@@ -15,7 +16,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         findViewById(R.id.linearlayout_studentRegistration).setOnClickListener(this);
-
+        findViewById(R.id.linearlayout_courseEnty).setOnClickListener(this);
        /* cvStudentRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -27,12 +28,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
+        Intent intent = null;
        switch (view.getId())
        {
            case  R.id.linearlayout_studentRegistration :
-           Intent intent = new Intent(HomeActivity.this, StudentListActivity.class);
+            intent = new Intent(HomeActivity.this, StudentListActivity.class);
            startActivity(intent);
            break;
+           case  R.id.linearlayout_courseEnty :
+               intent = new Intent(HomeActivity.this, CourseListActivity.class);
+               startActivity(intent);
+               break;
+
 
 
        }
