@@ -21,12 +21,12 @@ public class StudentListActivity extends AppCompatActivity {
     Button btnRegisterBack;
 List<StudentList> studentListList = Arrays.asList(
         new StudentList("Mg Mg","R.drawable.profile_pic"),
-        new StudentList("Mg Mg","R.drawable.profile_pic"),
-        new StudentList("Mg Mg","R.drawable.profile_pic"),
-        new StudentList("Mg Mg","R.drawable.profile_pic"),
-        new StudentList("Mg Mg","R.drawable.profile_pic"),
-        new StudentList("Mg Mg","R.drawable.profile_pic"),
-        new StudentList("Mg Mg","R.drawable.profile_pic"),
+        new StudentList("Aye Aye","R.drawable.profile_pic"),
+        new StudentList("Yummy","R.drawable.profile_pic"),
+        new StudentList("Aung Aung","R.drawable.profile_pic"),
+        new StudentList("Hla Hla","R.drawable.profile_pic"),
+        new StudentList("Sandar","R.drawable.profile_pic"),
+        new StudentList("Yu Yu","R.drawable.profile_pic"),
         new StudentList("Mg Mg","R.drawable.profile_pic")
 );
     @Override

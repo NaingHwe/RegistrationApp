@@ -32,14 +32,35 @@
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/margin_huge">
 
-                <TextView
-                    android:id="@+id/tv_courseName"
-                    style="@style/TextAppearance.AppCompat.Small"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                <LinearLayout
+                   android:layout_gravity="center"
                     android:layout_weight="1"
-                    /><!-- android:text="Professional Android Development"-->
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tv_openingCourseName"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+
+
+                        /><!-- android:text="Professional Android Development"-->
+
+                    <TextView
+                        android:drawableTint="@color/colorPrimary"
+                        android:drawablePadding="5dp"
+                        android:drawableStart="@drawable/ic_date_range"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:id="@+id/tv_courseDate"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+
+                        android:drawableLeft="@drawable/ic_date_range" />
+                </LinearLayout>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -56,7 +77,7 @@
 
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/cv_courseProfile"
+        android:id="@+id/cv_openingCourseProfile"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_margin="@dimen/margin_small"
