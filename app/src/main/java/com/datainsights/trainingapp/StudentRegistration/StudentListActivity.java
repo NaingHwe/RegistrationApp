@@ -2,6 +2,7 @@ package com.datainsights.trainingapp.StudentRegistration;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,59 +12,101 @@ import android.widget.Button;
 
 import com.datainsights.trainingapp.R;
 import com.datainsights.trainingapp.RVStudentListAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentListActivity extends AppCompatActivity {
     RecyclerView rvStudentList;
     FloatingActionButton fab;
     Button btnRegisterBack;
-List<StudentList> studentListList = Arrays.asList(
-        new StudentList("Mg Mg","R.drawable.profile_pic"),
-        new StudentList("Aye Aye","R.drawable.profile_pic"),
-        new StudentList("Yummy","R.drawable.profile_pic"),
-        new StudentList("Aung Aung","R.drawable.profile_pic"),
-        new StudentList("Hla Hla","R.drawable.profile_pic"),
-        new StudentList("Sandar","R.drawable.profile_pic"),
-        new StudentList("Yu Yu","R.drawable.profile_pic"),
-        new StudentList("Mg Mg","R.drawable.profile_pic")
-);
+     List<StudentData> studentListList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_list);
         btnRegisterBack = findViewById(R.id.btn_RegisterBack);
-     /*   Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
-
-        btnRegisterBack.setOnClickListener(new View.OnClickListener() {
+        getWindow().setBackgroundDrawableResource(R.drawable.background_pic1);
+         btnRegisterBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 finish();
             }
         });
-         fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(StudentListActivity.this,StudentDetailActivity.class);
+                Intent intent = new Intent(StudentListActivity.this, StudentDetailActivity.class);
                 startActivity(intent);
-              /*  Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
+
             }
         });
 
 
         rvStudentList = findViewById(R.id.rv_studentList);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        rvStudentList.setLayoutManager(layoutManager);
-        RVStudentListAdapter rvStudentListAdapter = new RVStudentListAdapter(this,studentListList);
-        rvStudentList.setAdapter(rvStudentListAdapter);
 
+        rvStudentList.addOnItemTouchListener(
+                new StudentItemClickListener(getApplicationContext(), rvStudentList, new StudentItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        // do whatever
+
+                        Intent intent = new Intent(StudentListActivity.this, StudentDetailActivity.class);
+
+                        intent.putExtra("StudentObj", studentListList.get(position));
+                        startActivity(intent);
+
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                        // do whatever
+                    }
+                })
+        );
 
 
     }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        // Get a reference to our posts
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("students");
+        studentListList = new ArrayList<>();
+// Attach a listener to read the data at our posts reference
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               // StudentData post = dataSnapshot.getValue(StudentData.class);
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    //System.out.println("for loop data = " + postSnapshot.getValue().toString() + "," + postSnapshot.getKey());
+
+                    StudentData  studata = postSnapshot.getValue(StudentData.class);
+                    studentListList.add(studata);
+                }
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                rvStudentList.setLayoutManager(layoutManager);
+                RVStudentListAdapter rvStudentListAdapter = new RVStudentListAdapter(getApplicationContext(), studentListList);
+                rvStudentList.setAdapter(rvStudentListAdapter);
+
+               // System.out.println("onresume state = " + post);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                //System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+    }
 }

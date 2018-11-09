@@ -8,6 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
+import com.bumptech.glide.request.RequestOptions;
+import com.datainsights.trainingapp.StudentRegistration.StudentData;
 import com.datainsights.trainingapp.StudentRegistration.StudentList;
 import com.squareup.picasso.Picasso;
 
@@ -17,15 +23,17 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 //(2) recyclerview adapter declare
-public class RVStudentListAdapter extends RecyclerView.Adapter<RVStudentListAdapter.StudentListViewHolder>{
+
+public class RVStudentListAdapter extends RecyclerView.Adapter<RVStudentListAdapter.StudentListViewHolder> {
 
     /*
     * Parameter constructor
     * @param context
     * */
     Context context;
-    List<StudentList> studentLists = new ArrayList<>();
-    public RVStudentListAdapter(Context context,List<StudentList> studentLists){
+    List<StudentData> studentLists = new ArrayList<>();
+
+    public RVStudentListAdapter(Context context,List<StudentData> studentLists){
         this.context = context;
         this.studentLists = studentLists;
     }
@@ -34,19 +42,42 @@ public class RVStudentListAdapter extends RecyclerView.Adapter<RVStudentListAdap
     @Override
     public StudentListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
        View view = LayoutInflater.from(context).inflate(R.layout.student_list_adapter,parent,false);
+
         return new StudentListViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull StudentListViewHolder holder, int position) {
 
-        StudentList studentList = studentLists.get(position);
+        StudentData studentList = studentLists.get(position);
         holder.tvStudentName.setText(studentList.getName());
         //studentList.getImageUrl()
-        Picasso.with(context)
-                .load(R.drawable.person_pic)
+        //R.drawable.person_pic
+     /*   Picasso.with(context)
+                .load(studentList.getProfileImageURL())
                 .error(R.drawable.ic_launcher_background)
+                .into(holder.cvStudentProfile);*/
+     /*   Glide.with(context)
+                .load("http://via.placeholder.com/300.png")
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.imagenotfound)
+                .into(ivImg);*/
+
+
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.ic_error);
+        requestOptions.error(R.drawable.ic_error);
+
+        Glide.with(context)
+                .setDefaultRequestOptions(requestOptions)
+                .load(studentList.getProfileImageURL())
                 .into(holder.cvStudentProfile);
+
+
+        /*GlideApp.with(context)
+                .load(studentList.getProfileImageURL())
+                .into(holder.cvStudentProfile);*/
     }
 
     @Override
@@ -58,11 +89,14 @@ public class RVStudentListAdapter extends RecyclerView.Adapter<RVStudentListAdap
     static class StudentListViewHolder extends RecyclerView.ViewHolder{
          TextView tvStudentName;
         CircleImageView cvStudentProfile;
+
         public StudentListViewHolder(View itemView) {
             super(itemView);
             tvStudentName = itemView.findViewById(R.id.tv_studentName);
             cvStudentProfile = itemView.findViewById(R.id.cv_studentProfile);
 
         }
+
     }
+
 }
