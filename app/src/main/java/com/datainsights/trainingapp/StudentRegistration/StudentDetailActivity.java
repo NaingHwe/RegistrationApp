@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,11 +20,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.datainsights.trainingapp.FileUtility;
@@ -37,8 +40,11 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class StudentDetailActivity extends AppCompatActivity implements View.OnClickListener, ActivityCompat.OnRequestPermissionsResultCallback {
@@ -53,12 +59,12 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
     private static final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 25;
     EditText etStudentName, etFirstPhone, etSecondPhone, etEmail;
     private RadioGroup mGenderGroup;
-    //Firebase
     FirebaseStorage storage;
     StorageReference storageReference;
     String stName = "", stEmail = "";
     String selectedGender = "";
     String fileName = "";
+    String filePath = "";
     RadioButton rbFemale, rbMale;
 
     @SuppressLint("CheckResult")
@@ -94,9 +100,7 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             StudentData value = (StudentData) extras.getSerializable("StudentObj");
-           // System.out.println("param data intent = " + value.toString());
-            if(value !=null)
-            {
+            if (value != null) {
                 etStudentName.setText(value.getName());
                 etFirstPhone.setText(String.valueOf(value.getFirstPhone()));
                 etSecondPhone.setText(String.valueOf(value.getSecondPhone()));
@@ -126,7 +130,6 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View view) {
-       // System.out.println("view data = " + view.getId());
         selectImage();
     }
 
@@ -134,7 +137,6 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
 
         stName = etStudentName.getText().toString();
         stEmail = etEmail.getText().toString();
-     //   System.out.println("student Name = " + stName + "," + stEmail + "," + etFirstPhone.getText());
         if (TextUtils.isEmpty(stName)) {
             etStudentName.setError("Please fill student name");
             etStudentName.requestFocus();
@@ -180,6 +182,7 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
         uploadImage();
 
     }
+
     private void savetoFirebase() {
 
         StudentData stdata = new StudentData();
@@ -190,11 +193,11 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
         stdata.setGender(selectedGender);
         if (downloadUri != null)
             stdata.setProfileImageURL(downloadUri.toString());
-       // System.out.println("stdata = " + stdata.getName() + "," + stdata.getEmail() + "," + stdata.getFirstPhone() + "," + downloadUri);
         StorageHelper.getStorageService().insertStudentData(stdata, new InsertStudentCallback() {
             @Override
             public void onSuccess(String msg) {
-             //   Toast.makeText(StudentDetailActivity.this, "Success Data insert", Toast.LENGTH_SHORT).show();
+                //   Toast.makeText(StudentDetailActivity.this, "Success Data insert", Toast.LENGTH_SHORT).show();
+                hideKeyboard(StudentDetailActivity.this);
                 finish();
             }
 
@@ -204,7 +207,16 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
             }
         });
     }
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager inputManager = (InputMethodManager) activity
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
 
+        // check if no view has focus:
+        View currentFocusedView = activity.getCurrentFocus();
+        if (currentFocusedView != null) {
+            inputManager.hideSoftInputFromWindow(currentFocusedView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
     private void uploadImage() {
 
 
@@ -219,21 +231,16 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
                             Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
-                          //  System.out.println("saveStudentRegisterData2 = " + fileName);
-                          //  System.out.println("saveStudentRegisterData2 data1= " + ref);
                             ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     downloadUri = uri;
-                                   // System.out.println("URl data = " + uri);
                                     savetoFirebase();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception exception) {
                                     Toast.makeText(getApplicationContext(), "download Fail", Toast.LENGTH_SHORT).show();
-                                  //  System.out.println("download uri fail");
-                                    // Handle any errors
                                 }
                             });
 
@@ -261,25 +268,13 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
     }
 
     private void selectImage() {
-
-
         final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
-
-
         AlertDialog.Builder builder = new AlertDialog.Builder(StudentDetailActivity.this);
-
         builder.setTitle("Add Photo!");
-
         builder.setItems(options, new DialogInterface.OnClickListener() {
-
             @Override
-
             public void onClick(DialogInterface dialog, int item) {
-
-                if (options[item].equals("Take Photo"))
-
-                {
-
+                if (options[item].equals("Take Photo")) {
                     if (!isPermissionCameraGranted()) {
                         ActivityCompat.requestPermissions(StudentDetailActivity.this,
                                 new String[]{Manifest.permission.CAMERA},
@@ -330,10 +325,11 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
                 if (resultCode == Activity.RESULT_OK) {
                     try {
                         Bundle extras = data.getExtras();
-
                         if (extras != null) {
                             imageBitmap = (Bitmap) extras.get("data");
                         }
+
+                        contentURI = getImageUri(getApplicationContext(), imageBitmap);
                         if (!isPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                             ActivityCompat.requestPermissions(StudentDetailActivity.this,
                                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -353,6 +349,7 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
                 if (resultCode == Activity.RESULT_OK) {
                     if (data != null) {
                         contentURI = data.getData();
+
                         try {
                             imageBitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), contentURI);
                             if (!isPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -373,12 +370,21 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+
     private void imageFileWrite() throws IOException {
-        String filePath = FileUtility.getPhotoFolderPath();
+        filePath = FileUtility.getPhotoFolderPath();
         fileName = String.valueOf("student_" + System.currentTimeMillis()).concat(".jpg");
         Pair<Boolean, String> returnResult = FileUtility.writeImageFile(filePath, fileName, imageBitmap);
-       // System.out.println("file path = " + finalPhoto);
+
         Uri uri = Uri.fromFile(new File(filePath, fileName));
+
         if (returnResult.first) {
             Picasso.with(this)
                     .load(uri)
