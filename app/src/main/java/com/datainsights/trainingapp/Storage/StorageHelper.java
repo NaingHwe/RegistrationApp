@@ -1,6 +1,6 @@
 package com.datainsights.trainingapp.Storage;
 
-import com.datainsights.trainingapp.StudentRegistration.FirebaseStorageClass;
+import com.datainsights.trainingapp.Storage.FirebaseStorageClass;
 
 public class StorageHelper {
     private static StorageService storageService;

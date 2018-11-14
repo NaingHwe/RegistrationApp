@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.datainsights.trainingapp.R;
 import com.datainsights.trainingapp.RVStudentListAdapter;
@@ -23,6 +24,7 @@ import java.util.List;
 
 public class StudentListActivity extends AppCompatActivity {
     RecyclerView rvStudentList;
+    ProgressBar progressLoading;
     FloatingActionButton fab;
     Button btnRegisterBack;
      List<StudentData> studentListList = new ArrayList<>();
@@ -50,11 +52,12 @@ public class StudentListActivity extends AppCompatActivity {
             }
         });
 
-
+        progressLoading = findViewById(R.id.simpleProgressBar);
+        progressLoading.setVisibility(View.VISIBLE);
         rvStudentList = findViewById(R.id.rv_studentList);
 
         rvStudentList.addOnItemTouchListener(
-                new StudentItemClickListener(getApplicationContext(), rvStudentList, new StudentItemClickListener.OnItemClickListener() {
+                new ItemClickListener(getApplicationContext(), rvStudentList, new ItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
                         // do whatever
@@ -99,7 +102,7 @@ public class StudentListActivity extends AppCompatActivity {
                 rvStudentList.setLayoutManager(layoutManager);
                 RVStudentListAdapter rvStudentListAdapter = new RVStudentListAdapter(getApplicationContext(), studentListList);
                 rvStudentList.setAdapter(rvStudentListAdapter);
-
+                progressLoading.setVisibility(View.GONE);
                // System.out.println("onresume state = " + post);
             }
 

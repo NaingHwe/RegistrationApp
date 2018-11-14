@@ -10,12 +10,10 @@ import android.widget.TextView;
 
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.annotation.GlideModule;
-import com.bumptech.glide.module.AppGlideModule;
+
 import com.bumptech.glide.request.RequestOptions;
 import com.datainsights.trainingapp.StudentRegistration.StudentData;
-import com.datainsights.trainingapp.StudentRegistration.StudentList;
-import com.squareup.picasso.Picasso;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +28,8 @@ public class RVStudentListAdapter extends RecyclerView.Adapter<RVStudentListAdap
     * Parameter constructor
     * @param context
     * */
-    Context context;
-    List<StudentData> studentLists = new ArrayList<>();
+    private Context context;
+    private List<StudentData> studentLists = new ArrayList<>();
 
     public RVStudentListAdapter(Context context,List<StudentData> studentLists){
         this.context = context;
@@ -90,7 +88,7 @@ public class RVStudentListAdapter extends RecyclerView.Adapter<RVStudentListAdap
          TextView tvStudentName;
         CircleImageView cvStudentProfile;
 
-        public StudentListViewHolder(View itemView) {
+        StudentListViewHolder(View itemView) {
             super(itemView);
             tvStudentName = itemView.findViewById(R.id.tv_studentName);
             cvStudentProfile = itemView.findViewById(R.id.cv_studentProfile);

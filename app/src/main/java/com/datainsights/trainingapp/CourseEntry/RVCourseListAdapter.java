@@ -8,7 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.datainsights.trainingapp.R;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -20,9 +23,9 @@ public class RVCourseListAdapter extends RecyclerView.Adapter<RVCourseListAdapte
 
 
     Context context;
-    List<CourseList> courseLists = new ArrayList<>();
+    List<CourseData> courseLists = new ArrayList<>();
 
-    public RVCourseListAdapter(Context context, List<CourseList> courseLists) {
+    public RVCourseListAdapter(Context context, List<CourseData> courseLists) {
         this.context = context;
         this.courseLists = courseLists;
     }
@@ -38,12 +41,22 @@ public class RVCourseListAdapter extends RecyclerView.Adapter<RVCourseListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull CourseListViewHolder holder, int position) {
-        CourseList courseList = courseLists.get(position);
-        holder.tvCourseName.setText(courseList.getName());
-        Picasso.with(context)
+        CourseData courseList = courseLists.get(position);
+        holder.tvCourseName.setText(courseList.getCourseTitle());
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.course);
+        requestOptions.error(R.drawable.course);
+
+        Glide.with(context)
+                .setDefaultRequestOptions(requestOptions)
+                .load(courseList.getCourseImageURL())
+                .into(holder.cvCourseProfile);
+
+       /* Picasso.with(context)
                 .load(R.drawable.course)
                 .error(R.drawable.ic_launcher_background)
-                .into(holder.cvCourseProfile);
+                .into(holder.cvCourseProfile);*/
     }
 
     @Override
@@ -56,10 +69,13 @@ public class RVCourseListAdapter extends RecyclerView.Adapter<RVCourseListAdapte
         TextView tvCourseName;
         CircleImageView cvCourseProfile;
 
+
+
         public CourseListViewHolder(View itemView) {
             super(itemView);
             tvCourseName = itemView.findViewById(R.id.tv_courseName);
             cvCourseProfile = itemView.findViewById(R.id.cv_courseProfile);
+
         }
     }
 }

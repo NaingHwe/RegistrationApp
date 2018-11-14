@@ -17,4 +17,7 @@
     <string name="title_activity_student_list">StudentListActivity</string>
     <string name="name">Name</string>
     <string name="_09xxxxxxxxx">09xxxxxxxxx</string>
+    <string name="title">Title</string>
+    <string name="course_code">Course Code</string>
+    <string name="description">Description</string>
 </resources>

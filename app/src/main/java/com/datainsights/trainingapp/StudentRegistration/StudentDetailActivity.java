@@ -31,7 +31,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.datainsights.trainingapp.FileUtility;
 import com.datainsights.trainingapp.R;
-import com.datainsights.trainingapp.Storage.InsertStudentCallback;
+import com.datainsights.trainingapp.Storage.InsertCallback;
 import com.datainsights.trainingapp.Storage.StorageHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -193,7 +193,7 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
         stdata.setGender(selectedGender);
         if (downloadUri != null)
             stdata.setProfileImageURL(downloadUri.toString());
-        StorageHelper.getStorageService().insertStudentData(stdata, new InsertStudentCallback() {
+        StorageHelper.getStorageService().insertStudentData(stdata, new InsertCallback() {
             @Override
             public void onSuccess(String msg) {
                 //   Toast.makeText(StudentDetailActivity.this, "Success Data insert", Toast.LENGTH_SHORT).show();

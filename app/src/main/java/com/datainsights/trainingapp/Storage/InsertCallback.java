@@ -1,6 +1,6 @@
 package com.datainsights.trainingapp.Storage;
 
-public interface InsertStudentCallback {
+public interface InsertCallback {
     void onSuccess(String msg);
     void onFailure(String msg);
 }

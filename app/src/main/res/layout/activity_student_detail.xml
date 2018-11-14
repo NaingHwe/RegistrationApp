@@ -71,6 +71,8 @@
                 app:cardElevation="5dp">
 
                 <EditText
+
+                    android:textColor="@color/background_text_color"
                     android:id="@+id/et_studentName"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/login_form_et_height"
@@ -123,6 +125,7 @@
                 app:cardElevation="5dp">
 
                 <EditText
+                    android:textColor="@color/background_text_color"
                     android:id="@+id/et_firstPhone"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/login_form_et_height"
@@ -148,6 +151,7 @@
                 app:cardElevation="5dp">
 
                 <EditText
+                    android:textColor="@color/background_text_color"
                     android:id="@+id/et_secondPhone"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/login_form_et_height"
@@ -172,6 +176,7 @@
                 app:cardElevation="5dp">
 
                 <EditText
+                    android:textColor="@color/background_text_color"
                     android:id="@+id/et_email"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/login_form_et_height"
