@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class StudentData implements Serializable{
 
+    private String userId;
     private int id;
     private String name;
     private long firstPhone;
@@ -11,6 +12,14 @@ public class StudentData implements Serializable{
     private String email;
     private String gender;
     private String profileImageURL;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public int getId() {
         return id;

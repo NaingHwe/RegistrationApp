@@ -10,14 +10,32 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class FirebaseStorageClass implements StorageService {
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference studentRef = database.getReference("students");
-    DatabaseReference courseRef = database.getReference("courses");
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference studentRef = database.getReference("students");
+    private DatabaseReference courseRef = database.getReference("courses");
 
     @Override
     public void insertStudentData(StudentData studentData, final InsertCallback callback) {
 
         studentRef.push().setValue(studentData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callback.onSuccess("Successful insert");
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.onFailure("Fail to insert");
+                    }
+                });
+    }
+
+    @Override
+    public void updateStudentData(StudentData studentData, final InsertCallback callback) {
+        studentRef.child(studentData.getUserId()).setValue(studentData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

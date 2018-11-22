@@ -96,6 +96,7 @@ public class StudentListActivity extends AppCompatActivity {
                     //System.out.println("for loop data = " + postSnapshot.getValue().toString() + "," + postSnapshot.getKey());
 
                     StudentData  studata = postSnapshot.getValue(StudentData.class);
+                    studata.setUserId(postSnapshot.getKey());
                     studentListList.add(studata);
                 }
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());

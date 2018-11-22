@@ -7,7 +7,7 @@ public interface StorageService {
 
     void insertStudentData(StudentData studentData, InsertCallback callback);
     void closeConnection();
-
+    void updateStudentData(StudentData studentData,InsertCallback callback);
     void insertCourseData(CourseData courseData,InsertCallback callback);
 
 }

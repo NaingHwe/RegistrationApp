@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.datainsights.trainingapp.BaseActivity;
 import com.datainsights.trainingapp.FileUtility;
 import com.datainsights.trainingapp.R;
 import com.datainsights.trainingapp.Storage.InsertCallback;
@@ -47,9 +48,9 @@ import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class StudentDetailActivity extends AppCompatActivity implements View.OnClickListener, ActivityCompat.OnRequestPermissionsResultCallback {
+public class StudentDetailActivity extends BaseActivity implements View.OnClickListener, ActivityCompat.OnRequestPermissionsResultCallback,InsertCallback{
     Bitmap imageBitmap;
-    Button btnBack, btnRegister;
+    Button btnBack, btnRegister,btnEdit,btnCancel;
     Uri contentURI;
     Uri downloadUri;
     CircleImageView cvStudentProfile;
@@ -66,6 +67,7 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
     String fileName = "";
     String filePath = "";
     RadioButton rbFemale, rbMale;
+    StudentData studentUpdate;
 
     @SuppressLint("CheckResult")
     @Override
@@ -79,6 +81,8 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
         mGenderGroup = findViewById(R.id.gender_radio_group);
         etEmail = findViewById(R.id.et_email);
         btnRegister = findViewById(R.id.btn_register);
+        btnEdit = findViewById(R.id.btn_edit);
+        btnCancel = findViewById(R.id.btn_cancel);
         cvStudentProfile = findViewById(R.id.cv_studentProfile);
         rbFemale = findViewById(R.id.radio_female);
         rbMale = findViewById(R.id.radio_male);
@@ -99,38 +103,66 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
         storageReference = storage.getReference("images");
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            StudentData value = (StudentData) extras.getSerializable("StudentObj");
-            if (value != null) {
-                etStudentName.setText(value.getName());
-                etFirstPhone.setText(String.valueOf(value.getFirstPhone()));
-                etSecondPhone.setText(String.valueOf(value.getSecondPhone()));
-                etEmail.setText(value.getEmail());
-                selectedGender = value.getGender();
-                etFirstPhone.setEnabled(false);
-                etSecondPhone.setEnabled(false);
-                etEmail.setEnabled(false);
-                etStudentName.setEnabled(false);
+            studentUpdate = (StudentData) extras.getSerializable("StudentObj");
+            if (studentUpdate != null) {
+                etStudentName.setText(studentUpdate.getName());
+                etFirstPhone.setText(String.valueOf(studentUpdate.getFirstPhone()));
+                etSecondPhone.setText(String.valueOf(studentUpdate.getSecondPhone()));
+                etEmail.setText(studentUpdate.getEmail());
+                selectedGender = studentUpdate.getGender();
+                setUIEnable(false);
                 btnRegister.setVisibility(View.GONE);
+                btnEdit.setVisibility(View.VISIBLE);
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.placeholder(R.drawable.ic_error);
                 requestOptions.error(R.drawable.ic_error);
 
                 Glide.with(this)
                         .setDefaultRequestOptions(requestOptions)
-                        .load(value.getProfileImageURL())
+                        .load(studentUpdate.getProfileImageURL())
                         .into(cvStudentProfile);
                 if (selectedGender.equalsIgnoreCase("Male")) {
                     rbMale.setChecked(true);
                 } else if (selectedGender.equalsIgnoreCase("Female")) {
                     rbFemale.setChecked(true);
                 }
+                btnEdit.setOnClickListener(this);
+                btnCancel.setOnClickListener(this);
             }
         }
     }
 
+    private void setUIEnable(boolean enable){
+        etFirstPhone.setEnabled(enable);
+        etSecondPhone.setEnabled(enable);
+        etEmail.setEnabled(enable);
+        etStudentName.setEnabled(enable);
+        cvStudentProfile.setClickable(enable);
+        mGenderGroup.setClickable(enable);
+        rbFemale.setClickable(enable);
+        rbMale.setClickable(enable);
+    }
+
     @Override
     public void onClick(View view) {
-        selectImage();
+        switch (view.getId()){
+            case R.id.cv_studentProfile:
+                selectImage();
+                break;
+            case R.id.btn_cancel:
+                btnCancel.setVisibility(View.GONE);
+                btnRegister.setVisibility(View.GONE);
+                btnEdit.setVisibility(View.VISIBLE);
+                setUIEnable(false);
+                break;
+            case R.id.btn_edit:
+                setUIEnable(true);
+                btnEdit.setVisibility(View.GONE);
+                btnCancel.setVisibility(View.VISIBLE);
+                btnRegister.setVisibility(View.VISIBLE);
+                btnRegister.setText("Update");
+                break;
+        }
     }
 
     private void saveStudentRegisterData() {
@@ -151,15 +183,15 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
             etFirstPhone.requestFocus();
             return;
         }
-        if (TextUtils.isEmpty(etSecondPhone.getText())) {
-            etSecondPhone.setError("Please type a second phone");
-            etSecondPhone.requestFocus();
-            return;
-        } else if (!(android.util.Patterns.PHONE.matcher(etSecondPhone.getText()).matches())) {
-            etSecondPhone.setError("Invalid Second Phone");
-            etSecondPhone.requestFocus();
-            return;
-        }
+//        if (TextUtils.isEmpty(etSecondPhone.getText())) {
+//            etSecondPhone.setError("Please type a second phone");
+//            etSecondPhone.requestFocus();
+//            return;
+//        } else if (!(android.util.Patterns.PHONE.matcher(etSecondPhone.getText()).matches())) {
+//            etSecondPhone.setError("Invalid Second Phone");
+//            etSecondPhone.requestFocus();
+//            return;
+//        }
         if (TextUtils.isEmpty(stEmail)) {
             etEmail.setError("Please type a mail");
             etEmail.requestFocus();
@@ -183,6 +215,25 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
 
     }
 
+    private void updateToFirebase(){
+        studentUpdate.setName(etStudentName.getText().toString());
+        studentUpdate.setFirstPhone(Long.parseLong(etFirstPhone.getText().toString()));
+        studentUpdate.setSecondPhone(Long.parseLong(etSecondPhone.getText().toString()));
+        studentUpdate.setEmail(etEmail.getText().toString());
+        studentUpdate.setGender(selectedGender);
+        if (downloadUri != null)
+            studentUpdate.setProfileImageURL(downloadUri.toString());
+        StorageHelper.getStorageService().updateStudentData(studentUpdate, this);
+    }
+
+    private void saveOrUpdateToFirebase(){
+        if(studentUpdate == null){
+            savetoFirebase();
+        }else{
+            updateToFirebase();
+        }
+    }
+
     private void savetoFirebase() {
 
         StudentData stdata = new StudentData();
@@ -193,19 +244,7 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
         stdata.setGender(selectedGender);
         if (downloadUri != null)
             stdata.setProfileImageURL(downloadUri.toString());
-        StorageHelper.getStorageService().insertStudentData(stdata, new InsertCallback() {
-            @Override
-            public void onSuccess(String msg) {
-                //   Toast.makeText(StudentDetailActivity.this, "Success Data insert", Toast.LENGTH_SHORT).show();
-                hideKeyboard(StudentDetailActivity.this);
-                finish();
-            }
-
-            @Override
-            public void onFailure(String msg) {
-                Toast.makeText(StudentDetailActivity.this, "Fail Data insert", Toast.LENGTH_SHORT).show();
-            }
-        });
+        StorageHelper.getStorageService().insertStudentData(stdata,this);
     }
     public static void hideKeyboard(Activity activity) {
         InputMethodManager inputManager = (InputMethodManager) activity
@@ -218,29 +257,25 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
         }
     }
     private void uploadImage() {
-
-
+        uploadingDialog(true);
         if (contentURI != null) {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
             final StorageReference ref = storageReference.child("images/student_" + System.currentTimeMillis() + ".jpg");
             ref.putFile(contentURI)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
                             Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
                             ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     downloadUri = uri;
-                                    savetoFirebase();
+                                    saveOrUpdateToFirebase();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception exception) {
-                                    Toast.makeText(getApplicationContext(), "download Fail", Toast.LENGTH_SHORT).show();
+                                    uploadingDialog(false);
+                                    Toast.makeText(getApplicationContext(), "Image upload Fail", Toast.LENGTH_SHORT).show();
                                 }
                             });
 
@@ -249,21 +284,20 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            progressDialog.dismiss();
                             Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            savetoFirebase();
+                            uploadingDialog(false);
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
+                            int progress = (int)(100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
                                     .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                            uploadLoading.setProgress(progress);
                         }
                     });
         } else {
-            savetoFirebase();
+            saveOrUpdateToFirebase();
         }
     }
 
@@ -397,5 +431,18 @@ public class StudentDetailActivity extends AppCompatActivity implements View.OnC
         return ContextCompat.checkSelfPermission(getApplicationContext(),
                 permission)
                 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    @Override
+    public void onSuccess(String msg) {
+        uploadingDialog(false);
+        hideKeyboard(StudentDetailActivity.this);
+        finish();
+    }
+
+    @Override
+    public void onFailure(String msg) {
+        uploadingDialog(false);
+        Toast.makeText(StudentDetailActivity.this, "Fail Data insert", Toast.LENGTH_SHORT).show();
     }
 }

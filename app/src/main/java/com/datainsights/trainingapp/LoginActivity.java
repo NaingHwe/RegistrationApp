@@ -1,13 +1,19 @@
 package com.datainsights.trainingapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,6 +26,7 @@ public class LoginActivity extends BaseActivity {
     private final String TAG = LoginActivity.class.getSimpleName();
     EditText loginEtMail, loginEtPassword;
     Button btnLogin;
+    ImageView ivLogout;
     private FirebaseAuth mAuth;
 
     @Override
@@ -28,6 +35,7 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
         btnLogin = findViewById(R.id.btn_login);
+        ivLogout = findViewById(R.id.iv_logout);
         loginEtMail = findViewById(R.id.login_et_email);
         loginEtPassword = findViewById(R.id.login_et_password);
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -36,6 +44,36 @@ public class LoginActivity extends BaseActivity {
                 doLogin();
             }
         });
+        loginEtPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_GO){
+                    doLogin();
+                    return true;
+                }
+                return false;
+            }
+        });
+        ivLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                loginEtMail.setText("");
+                ivLogout.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mAuth.getCurrentUser() != null){
+            ivLogout.setVisibility(View.VISIBLE);
+            loginEtMail.setText(mAuth.getCurrentUser().getEmail());
+            loginEtPassword.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(loginEtPassword, InputMethodManager.SHOW_IMPLICIT);
+        }
     }
 
     private void doLogin() {
