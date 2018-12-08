@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,7 +15,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.view.View;
@@ -445,4 +443,5 @@ public class StudentDetailActivity extends BaseActivity implements View.OnClickL
         uploadingDialog(false);
         Toast.makeText(StudentDetailActivity.this, "Fail Data insert", Toast.LENGTH_SHORT).show();
     }
+
 }

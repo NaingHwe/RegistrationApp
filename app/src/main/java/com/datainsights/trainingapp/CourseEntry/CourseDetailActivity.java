@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.datainsights.trainingapp.BaseActivity;
 import com.datainsights.trainingapp.FileUtility;
 import com.datainsights.trainingapp.R;
 import com.datainsights.trainingapp.Storage.InsertCallback;
@@ -45,8 +46,8 @@ import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class CourseDetailActivity extends AppCompatActivity implements View.OnClickListener {
-    Button btnCourseDetailBack,btnCourseSave;
+public class CourseDetailActivity extends BaseActivity implements View.OnClickListener,InsertCallback{
+    Button btnCourseDetailBack,btnCourseSave, btnCourseCancel,btnCourseEdit;
     CircleImageView cvCourse;
     Bitmap imageBitmap;
     String fileName = "";
@@ -54,7 +55,7 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
     Uri contentURI;
     Uri downloadUri;
     EditText etCourseTitle,etCourseCode,etCourseDescription;
-
+    CourseData value;
     String courseTitle,courseCode,courseDescription;
     FirebaseStorage storage;
     StorageReference storageReference;
@@ -72,8 +73,12 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
         etCourseCode = findViewById(R.id.et_course_code);
         etCourseDescription = findViewById(R.id.et_course_description);
         btnCourseSave = findViewById(R.id.btn_course_save);
+        btnCourseEdit = findViewById(R.id.btn_course_edit);
+        btnCourseCancel = findViewById(R.id.btn_course_cancel);
         cvCourse.setOnClickListener(this);
         btnCourseSave.setOnClickListener(this);
+        btnCourseEdit.setOnClickListener(this);
+        btnCourseCancel.setOnClickListener(this);
         btnCourseDetailBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,16 +89,16 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
         storageReference = storage.getReference("course_images");
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            CourseData value = (CourseData) extras.getSerializable("CourseObj");
+             value = (CourseData) extras.getSerializable("CourseObj");
             if (value != null) {
                 etCourseTitle.setText(value.getCourseTitle());
                 etCourseCode.setText(value.getCourseCode());
                 etCourseDescription.setText(value.getCourseDescription());
-
+                cvCourse.setEnabled(false);
                 etCourseTitle.setEnabled(false);
                 etCourseCode.setEnabled(false);
                 etCourseDescription.setEnabled(false);
-
+                btnCourseEdit.setVisibility(View.VISIBLE);
                 btnCourseSave.setVisibility(View.GONE);
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.placeholder(R.drawable.course);
@@ -164,6 +169,13 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
                 permission)
                 == PackageManager.PERMISSION_GRANTED;
     }
+    private void setUIEnable(boolean enable){
+        cvCourse.setEnabled(enable);
+        etCourseTitle.setEnabled(enable);
+        etCourseCode.setEnabled(enable);
+        etCourseDescription.setEnabled(enable);
+
+    }
     @Override
     public void onClick(View view) {
 
@@ -174,6 +186,19 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
                break;
            case R.id.cv_course:
                selectImage();
+               break;
+           case R.id.btn_course_cancel:
+               btnCourseSave.setVisibility(View.GONE);
+               btnCourseCancel.setVisibility(View.GONE);
+               btnCourseEdit.setVisibility(View.VISIBLE);
+               setUIEnable(false);
+               break;
+           case R.id.btn_course_edit:
+               setUIEnable(true);
+               btnCourseEdit.setVisibility(View.GONE);
+               btnCourseSave.setVisibility(View.VISIBLE);
+               btnCourseSave.setText("Update");
+               btnCourseCancel.setVisibility(View.VISIBLE);
                break;
 
        }
@@ -207,26 +232,25 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
         uploadImage();
     }
     private void uploadImage() {
+        uploadingDialog(true);
         if (contentURI != null) {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
+
             final StorageReference ref = storageReference.child("course_images/course_" + String.valueOf(System.currentTimeMillis()) + ".jpg");
             ref.putFile(contentURI)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
                             Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
                             ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     downloadUri = uri;
-                                    savetoFirebase();
+                                    saveOrUpdateToFirebase();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception exception) {
+                                    uploadingDialog(false);
                                     Toast.makeText(getApplicationContext(), "download Fail", Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -236,9 +260,8 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            progressDialog.dismiss();
+                            uploadingDialog(false);
                             Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            savetoFirebase();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -246,12 +269,32 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                             double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
                                     .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                            uploadLoading.setMessage("Uploaded " + (int) progress + "%");
                         }
                     });
         } else {
-            savetoFirebase();
+            saveOrUpdateToFirebase();
         }
+    }
+    private void saveOrUpdateToFirebase(){
+        if(value == null){
+            savetoFirebase();
+        }else{
+            updateToFirebase();
+        }
+    }
+    private void updateToFirebase(){
+        value.setCourseTitle(etCourseTitle.getText().toString());
+        value.setCourseCode(etCourseCode.getText().toString());
+        value.setCourseDescription(etCourseDescription.getText().toString());
+        if (downloadUri != null)
+            value.setCourseImageURL(downloadUri.toString());
+       StorageHelper.getStorageService().updateCourseData(value, this);
+
+
+
+
+
     }
     private void savetoFirebase() {
 
@@ -261,19 +304,7 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
         courseData.setCourseDescription(etCourseDescription.getText().toString());
         if (downloadUri != null)
             courseData.setCourseImageURL(downloadUri.toString());
-        StorageHelper.getStorageService().insertCourseData(courseData, new InsertCallback() {
-            @Override
-            public void onSuccess(String msg) {
-                //   Toast.makeText(StudentDetailActivity.this, "Success Data insert", Toast.LENGTH_SHORT).show();
-                hideKeyboard(CourseDetailActivity.this);
-                finish();
-            }
-
-            @Override
-            public void onFailure(String msg) {
-                Toast.makeText(CourseDetailActivity.this, "Fail Data insert", Toast.LENGTH_SHORT).show();
-            }
-        });
+        StorageHelper.getStorageService().insertCourseData(courseData,this);
     }
     public static void hideKeyboard(Activity activity) {
         InputMethodManager inputManager = (InputMethodManager) activity
@@ -360,4 +391,17 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
                     .into(cvCourse);
         }
     }
+
+    @Override
+    public void onSuccess(String msg) {
+        uploadingDialog(false);
+        hideKeyboard(CourseDetailActivity.this);
+        finish();
+    }
+
+    @Override
+    public void onFailure(String msg) {
+        Toast.makeText(CourseDetailActivity.this, "Fail Data insert", Toast.LENGTH_SHORT).show();
+    }
+
 }

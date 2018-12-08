@@ -94,6 +94,7 @@ public class CourseListActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     CourseData courseData = postSnapshot.getValue(CourseData.class);
+                    courseData.setCourseId(postSnapshot.getKey());
                     courseListArray.add(courseData);
                 }
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());

@@ -69,6 +69,23 @@ public class FirebaseStorageClass implements StorageService {
     }
 
     @Override
+    public void updateCourseData(CourseData courseData, final InsertCallback callback) {
+        courseRef.child(courseData.getCourseId()).setValue(courseData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callback.onSuccess("Success Update");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.onFailure("Fail to Update");
+                    }
+                });
+    }
+
+    @Override
     public void closeConnection() {
 
     }

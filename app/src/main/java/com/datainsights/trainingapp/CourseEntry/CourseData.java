@@ -4,11 +4,19 @@ import java.io.Serializable;
 
 public class CourseData implements Serializable {
 
+    private String courseId;
     private String courseTitle;
     private String courseCode;
     private String courseDescription;
     private String courseImageURL;
 
+    public String getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
 
     public String getCourseImageURL() {
         return courseImageURL;

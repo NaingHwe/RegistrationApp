@@ -193,7 +193,11 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
+
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="15dp"
                 android:backgroundTint="@color/md_grey_200"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="5dp"
@@ -214,7 +218,10 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+
+
                 android:backgroundTint="@color/colorPrimary"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="5dp"
@@ -235,7 +242,10 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+              android:layout_marginBottom="15dp"
                 android:backgroundTint="@color/colorPrimary"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="5dp"
