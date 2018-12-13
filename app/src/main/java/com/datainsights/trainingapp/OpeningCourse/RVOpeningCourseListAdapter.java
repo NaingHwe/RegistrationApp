@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.datainsights.trainingapp.R;
 import com.squareup.picasso.Picasso;
 
@@ -19,9 +21,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RVOpeningCourseListAdapter extends RecyclerView.Adapter<RVOpeningCourseListAdapter.OpeningCourseListViewHolder>{
 
     Context context;
-    List<OpeningCourseList> openingCourseLists = new ArrayList<>();
+    List<OpeningCourseData> openingCourseLists = new ArrayList<>();
 
-    public RVOpeningCourseListAdapter(Context context, List<OpeningCourseList> openingCourseLists) {
+    public RVOpeningCourseListAdapter(Context context, List<OpeningCourseData> openingCourseLists) {
         this.context = context;
         this.openingCourseLists = openingCourseLists;
     }
@@ -35,13 +37,20 @@ public class RVOpeningCourseListAdapter extends RecyclerView.Adapter<RVOpeningCo
 
     @Override
     public void onBindViewHolder(@NonNull OpeningCourseListViewHolder holder, int position) {
-        OpeningCourseList  openingCourseListData = openingCourseLists.get(position);
-        holder.tvOpeningCourseName.setText(openingCourseListData.getName());
-        holder.tvCourseDate.setText(openingCourseListData.getDateData());
-        Picasso.with(context)
-                .load(R.drawable.course)
-                .error(R.drawable.ic_launcher_background)
+        OpeningCourseData  openingCourseListData = openingCourseLists.get(position);
+        holder.tvOpeningCourseName.setText(openingCourseListData.getOpeningCourseTitle());
+        holder.tvCourseDate.setText(openingCourseListData.getOpeningCourseStartDate());
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.course);
+        requestOptions.error(R.drawable.course);
+
+        Glide.with(context)
+                .setDefaultRequestOptions(requestOptions)
+                .load(openingCourseListData.getOpeningCourseImageURL())
                 .into(holder.cvOpeningCourseProfile);
+
+
     }
 
     @Override

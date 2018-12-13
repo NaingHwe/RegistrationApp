@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.datainsights.trainingapp.CourseEntry.CourseListActivity;
-import com.datainsights.trainingapp.OpeningCourse.OpeningCourseList;
 import com.datainsights.trainingapp.OpeningCourse.OpeningCourseListActivity;
 import com.datainsights.trainingapp.StudentRegistration.StudentListActivity;
 

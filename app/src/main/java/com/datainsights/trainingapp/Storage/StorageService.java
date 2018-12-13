@@ -1,6 +1,7 @@
 package com.datainsights.trainingapp.Storage;
 
 import com.datainsights.trainingapp.CourseEntry.CourseData;
+import com.datainsights.trainingapp.OpeningCourse.OpeningCourseData;
 import com.datainsights.trainingapp.StudentRegistration.StudentData;
 
 public interface StorageService {
@@ -10,5 +11,7 @@ public interface StorageService {
     void updateStudentData(StudentData studentData,InsertCallback callback);
     void insertCourseData(CourseData courseData,InsertCallback callback);
     void updateCourseData(CourseData courseData,InsertCallback callback);
+    void insertOpeningCourseData(OpeningCourseData openCourseData, InsertCallback callback);
+    void updateOpeningCourseData(OpeningCourseData openCourseData,InsertCallback callback);
 
 }

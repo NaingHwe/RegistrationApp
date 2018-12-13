@@ -52,6 +52,13 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp">
+            <ProgressBar
+                android:layout_gravity="center"
+                android:id="@+id/progressBarOpenCourse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_centerHorizontal="true"/>
             <android.support.v7.widget.RecyclerView
                 tools:listitem="@layout/opening_course_list_adapter"
                 android:id="@+id/rv_openingCourseList"
