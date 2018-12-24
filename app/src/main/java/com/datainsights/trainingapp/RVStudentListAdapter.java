@@ -8,12 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
 import com.bumptech.glide.Glide;
-
 import com.bumptech.glide.request.RequestOptions;
 import com.datainsights.trainingapp.StudentRegistration.StudentData;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +21,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RVStudentListAdapter extends RecyclerView.Adapter<RVStudentListAdapter.StudentListViewHolder> {
 
+
     /*
     * Parameter constructor
     * @param context
@@ -31,9 +29,13 @@ public class RVStudentListAdapter extends RecyclerView.Adapter<RVStudentListAdap
     private Context context;
     private List<StudentData> studentLists = new ArrayList<>();
 
-    public RVStudentListAdapter(Context context,List<StudentData> studentLists){
+
+    public StudentListClickListener studentListClickListener;
+
+    public RVStudentListAdapter(Context context, List<StudentData> studentLists, StudentListClickListener studentListClickListener) {
         this.context = context;
         this.studentLists = studentLists;
+        this.studentListClickListener = studentListClickListener;
     }
 
     @NonNull
@@ -47,7 +49,7 @@ public class RVStudentListAdapter extends RecyclerView.Adapter<RVStudentListAdap
     @Override
     public void onBindViewHolder(@NonNull StudentListViewHolder holder, int position) {
 
-        StudentData studentList = studentLists.get(position);
+        final StudentData studentList = studentLists.get(position);
         holder.tvStudentName.setText(studentList.getName());
         //studentList.getImageUrl()
         //R.drawable.person_pic
@@ -60,9 +62,6 @@ public class RVStudentListAdapter extends RecyclerView.Adapter<RVStudentListAdap
                 .placeholder(R.drawable.placeholder)
                 .error(R.drawable.imagenotfound)
                 .into(ivImg);*/
-
-
-
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.ic_error);
         requestOptions.error(R.drawable.ic_error);
@@ -71,11 +70,18 @@ public class RVStudentListAdapter extends RecyclerView.Adapter<RVStudentListAdap
                 .setDefaultRequestOptions(requestOptions)
                 .load(studentList.getProfileImageURL())
                 .into(holder.cvStudentProfile);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                studentListClickListener.onClick(studentList);
+            }
+        });
 
 
-        /*GlideApp.with(context)
-                .load(studentList.getProfileImageURL())
-                .into(holder.cvStudentProfile);*/
+    }
+
+    public interface StudentListClickListener {
+        void onClick(StudentData studentData);
     }
 
     @Override

@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.datainsights.trainingapp.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,21 +22,17 @@ public class RVOpeningCourseListAdapter extends RecyclerView.Adapter<RVOpeningCo
     Context context;
     List<OpeningCourseData> openingCourseLists = new ArrayList<>();
 
-    public RVOpeningCourseListAdapter(Context context, List<OpeningCourseData> openingCourseLists) {
+    private OpeningCourseClickListener openingCourseClickListener;
+
+    public RVOpeningCourseListAdapter(Context context, List<OpeningCourseData> openingCourseLists, OpeningCourseClickListener openingCourseClickListener) {
         this.context = context;
         this.openingCourseLists = openingCourseLists;
-    }
-
-    @NonNull
-    @Override
-    public OpeningCourseListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.opening_course_list_adapter,parent,false);
-        return new OpeningCourseListViewHolder(view);
+        this.openingCourseClickListener = openingCourseClickListener;
     }
 
     @Override
     public void onBindViewHolder(@NonNull OpeningCourseListViewHolder holder, int position) {
-        OpeningCourseData  openingCourseListData = openingCourseLists.get(position);
+        final OpeningCourseData openingCourseListData = openingCourseLists.get(position);
         holder.tvOpeningCourseName.setText(openingCourseListData.getOpeningCourseTitle());
         holder.tvCourseDate.setText(openingCourseListData.getOpeningCourseStartDate());
 
@@ -50,7 +45,24 @@ public class RVOpeningCourseListAdapter extends RecyclerView.Adapter<RVOpeningCo
                 .load(openingCourseListData.getOpeningCourseImageURL())
                 .into(holder.cvOpeningCourseProfile);
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openingCourseClickListener.onClick(openingCourseListData);
+            }
+        });
 
+    }
+
+    @NonNull
+    @Override
+    public OpeningCourseListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.opening_course_list_adapter, parent, false);
+        return new OpeningCourseListViewHolder(view);
+    }
+
+    public interface OpeningCourseClickListener {
+        void onClick(OpeningCourseData openingCourseData);
     }
 
     @Override

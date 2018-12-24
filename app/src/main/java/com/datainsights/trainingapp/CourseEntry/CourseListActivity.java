@@ -1,10 +1,10 @@
 package com.datainsights.trainingapp.CourseEntry;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.datainsights.trainingapp.R;
-import com.datainsights.trainingapp.StudentRegistration.ItemClickListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,7 +19,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 
@@ -58,7 +56,7 @@ public class CourseListActivity extends AppCompatActivity {
 
 
         rvCourseList = findViewById(R.id.rv_courseList);
-        rvCourseList.addOnItemTouchListener(
+       /* rvCourseList.addOnItemTouchListener(
                 new ItemClickListener(getApplicationContext(), rvCourseList, new ItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
@@ -76,7 +74,7 @@ public class CourseListActivity extends AppCompatActivity {
                         // do whatever
                     }
                 })
-        );
+        );*/
 
 
     }
@@ -99,7 +97,15 @@ public class CourseListActivity extends AppCompatActivity {
                 }
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                 rvCourseList.setLayoutManager(layoutManager);
-                RVCourseListAdapter rvCourseListAdapter = new RVCourseListAdapter(getApplicationContext(), courseListArray);
+                RVCourseListAdapter rvCourseListAdapter = new RVCourseListAdapter(getApplicationContext(), courseListArray, new RVCourseListAdapter.CourseListClickListener() {
+                    @Override
+                    public void onClick(CourseData courseData) {
+                        Intent intent = new Intent(CourseListActivity.this, CourseDetailActivity.class);
+
+                        intent.putExtra("CourseObj", courseData);
+                        startActivity(intent);
+                    }
+                });
                 rvCourseList.setAdapter(rvCourseListAdapter);
                 progressLoading.setVisibility(View.GONE);
             }
@@ -110,4 +116,6 @@ public class CourseListActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

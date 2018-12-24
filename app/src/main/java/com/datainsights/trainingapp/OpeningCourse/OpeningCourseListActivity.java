@@ -1,10 +1,10 @@
 package com.datainsights.trainingapp.OpeningCourse;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.datainsights.trainingapp.R;
-import com.datainsights.trainingapp.StudentRegistration.ItemClickListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,8 +19,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class OpeningCourseListActivity extends AppCompatActivity {
     ProgressBar progressLoading;
@@ -65,7 +62,7 @@ public class OpeningCourseListActivity extends AppCompatActivity {
 
 
 
-        rvOpeningCourseList.addOnItemTouchListener(
+        /*rvOpeningCourseList.addOnItemTouchListener(
                 new ItemClickListener(getApplicationContext(), rvOpeningCourseList, new ItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
@@ -83,7 +80,7 @@ public class OpeningCourseListActivity extends AppCompatActivity {
                         // do whatever
                     }
                 })
-        );
+        );*/
     }
 
     @Override
@@ -104,7 +101,15 @@ public class OpeningCourseListActivity extends AppCompatActivity {
                 }
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                 rvOpeningCourseList.setLayoutManager(layoutManager);
-                RVOpeningCourseListAdapter rvOpeningCourseListAdapter = new RVOpeningCourseListAdapter(getApplicationContext(),openCourseListArray);
+                RVOpeningCourseListAdapter rvOpeningCourseListAdapter = new RVOpeningCourseListAdapter(getApplicationContext(), openCourseListArray, new RVOpeningCourseListAdapter.OpeningCourseClickListener() {
+                    @Override
+                    public void onClick(OpeningCourseData openingCourseData) {
+                        Intent intent = new Intent(OpeningCourseListActivity.this, OpeningCourseDetailActivity.class);
+
+                        intent.putExtra("OpeningCourseObj", openingCourseData);
+                        startActivity(intent);
+                    }
+                });
                 rvOpeningCourseList.setAdapter(rvOpeningCourseListAdapter);
                 progressLoading.setVisibility(View.GONE);
             }

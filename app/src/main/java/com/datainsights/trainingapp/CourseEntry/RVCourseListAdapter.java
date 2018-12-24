@@ -11,8 +11,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.datainsights.trainingapp.R;
-import com.facebook.shimmer.ShimmerFrameLayout;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,23 +23,17 @@ public class RVCourseListAdapter extends RecyclerView.Adapter<RVCourseListAdapte
     Context context;
     List<CourseData> courseLists = new ArrayList<>();
 
-    public RVCourseListAdapter(Context context, List<CourseData> courseLists) {
+    private CourseListClickListener courseListClickListener;
+
+    public RVCourseListAdapter(Context context, List<CourseData> courseLists, CourseListClickListener courseListClickListener) {
         this.context = context;
         this.courseLists = courseLists;
-    }
-
-    @NonNull
-    @Override
-    public CourseListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.course_list_adapter,parent,false);
-
-       
-        return new CourseListViewHolder(view);
+        this.courseListClickListener = courseListClickListener;
     }
 
     @Override
     public void onBindViewHolder(@NonNull CourseListViewHolder holder, int position) {
-        CourseData courseList = courseLists.get(position);
+        final CourseData courseList = courseLists.get(position);
         holder.tvCourseName.setText(courseList.getCourseTitle());
 
         RequestOptions requestOptions = new RequestOptions();
@@ -52,11 +44,30 @@ public class RVCourseListAdapter extends RecyclerView.Adapter<RVCourseListAdapte
                 .setDefaultRequestOptions(requestOptions)
                 .load(courseList.getCourseImageURL())
                 .into(holder.cvCourseProfile);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                courseListClickListener.onClick(courseList);
+            }
+        });
 
        /* Picasso.with(context)
                 .load(R.drawable.course)
                 .error(R.drawable.ic_launcher_background)
                 .into(holder.cvCourseProfile);*/
+    }
+
+    @NonNull
+    @Override
+    public CourseListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.course_list_adapter, parent, false);
+
+
+        return new CourseListViewHolder(view);
+    }
+
+    public interface CourseListClickListener {
+        void onClick(CourseData courseData);
     }
 
     @Override

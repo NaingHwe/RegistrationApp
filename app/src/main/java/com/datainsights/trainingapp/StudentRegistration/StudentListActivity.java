@@ -22,7 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentListActivity extends AppCompatActivity {
+public class StudentListActivity extends AppCompatActivity implements RVStudentListAdapter.StudentListClickListener {
     RecyclerView rvStudentList;
     ProgressBar progressLoading;
     FloatingActionButton fab;
@@ -56,7 +56,7 @@ public class StudentListActivity extends AppCompatActivity {
         progressLoading.setVisibility(View.VISIBLE);
         rvStudentList = findViewById(R.id.rv_studentList);
 
-        rvStudentList.addOnItemTouchListener(
+     /*   rvStudentList.addOnItemTouchListener(
                 new ItemClickListener(getApplicationContext(), rvStudentList, new ItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
@@ -74,7 +74,7 @@ public class StudentListActivity extends AppCompatActivity {
                         // do whatever
                     }
                 })
-        );
+        );*/
 
 
     }
@@ -101,10 +101,20 @@ public class StudentListActivity extends AppCompatActivity {
                 }
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                 rvStudentList.setLayoutManager(layoutManager);
-                RVStudentListAdapter rvStudentListAdapter = new RVStudentListAdapter(getApplicationContext(), studentListList);
+                RVStudentListAdapter rvStudentListAdapter = new RVStudentListAdapter(getApplicationContext(), studentListList, new RVStudentListAdapter.StudentListClickListener() {
+                    @Override
+                    public void onClick(StudentData studentData) {
+                        Intent intent = new Intent(StudentListActivity.this, StudentDetailActivity.class);
+
+                        intent.putExtra("StudentObj", studentData);
+                        startActivity(intent);
+                    }
+                });
                 rvStudentList.setAdapter(rvStudentListAdapter);
                 progressLoading.setVisibility(View.GONE);
                // System.out.println("onresume state = " + post);
+
+
             }
 
             @Override
@@ -113,4 +123,22 @@ public class StudentListActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onClick(StudentData studentData) {
+        Intent intent = new Intent(StudentListActivity.this, StudentDetailActivity.class);
+
+        //intent.putExtra("StudentObj", studentListList.get(position));
+        intent.putExtra("StudentObj", studentData);
+        startActivity(intent);
+    }
+
+   /* @Override
+    public void onClick(StudentData studentData) {
+        Intent intent = new Intent(StudentListActivity.this, StudentDetailActivity.class);
+
+        //intent.putExtra("StudentObj", studentListList.get(position));
+        intent.putExtra("StudentObj",studentData);
+        startActivity(intent);
+    }*/
 }

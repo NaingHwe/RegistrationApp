@@ -117,39 +117,6 @@
                     tools:ignore="VectorDrawableCompat" />
             </FrameLayout>
 
-            <!--  <android.support.design.widget.FloatingActionButton
-                  android:id="@+id/fab"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_gravity="bottom|end"
-                  android:layout_margin="@dimen/fab_margin"
-                  app:srcCompat="@drawable/ic_add_black_24dp"
-                  tools:ignore="VectorDrawableCompat" />-->
-      <!--  </LinearLayout>-->
 
-
-
-
-
-
-
-    <!--@drawable/background_pic1<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".StudentRegistration.StudentListActivity"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            />-->
-    <!--  android:src="@drawable/background_pic1"-->
-    <!--android:background="@drawable/background_pic1"-->
-
-
-    <!-- </FrameLayout>-->
 </LinearLayout>
 
